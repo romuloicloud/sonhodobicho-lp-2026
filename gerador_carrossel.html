@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estúdio Gráfico | Carrossel Sonho do Bicho</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap');
+        
+        body { background: #0F172A; text-align: center; font-family: 'Outfit', sans-serif; margin: 0; padding: 50px; }
+        h1 { color: #fff; margin-bottom: 20px; }
+        button { background: #E4007C; color: white; border: none; padding: 20px 40px; font-size: 20px; font-family: 'Outfit', sans-serif; font-weight: bold; border-radius: 50px; cursor: pointer; margin-bottom: 50px; box-shadow: 0 5px 20px rgba(228, 0, 124, 0.4); transition: transform 0.2s; }
+        button:hover { transform: scale(1.05); }
+        
+        .grid-preview { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1200px; margin: 0 auto; }
+        
+        /* Formato Retrato Instagram (Proporção 4:5 | 1080x1350 simulado) */
+        .slide { 
+            width: 540px; 
+            height: 675px; /* Metade do real para caber na tela, depois exporta em 2x */
+            background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%); 
+            color: white; 
+            position: relative; 
+            overflow: hidden; 
+            text-align: left; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            padding: 50px; 
+            border-radius: 20px;
+            box-sizing: border-box;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        
+        /* Identidade Visual Básica */
+        .numero { font-size: 300px; position: absolute; top: -50px; right: -20px; font-weight: 900; color: rgba(255,255,255,0.03); line-height: 1; z-index: 0; }
+        .slide-content { z-index: 1; position: relative; }
+        
+        .tag { background: #FDE047; color: #1E1B4B; padding: 8px 20px; font-size: 16px; font-weight: bold; border-radius: 50px; text-transform: uppercase; margin-bottom: 30px; display: inline-block; }
+        .titulo { font-size: 42px; font-weight: 900; line-height: 1.1; margin-bottom: 25px; color: #fff; }
+        .titulo-destaque { color: #FDE047; }
+        .texto { font-size: 24px; font-weight: 400; line-height: 1.4; color: #CBD5E1; }
+        
+        .footer { position: absolute; bottom: 40px; left: 50px; display: flex; align-items: center; gap: 15px; }
+        .footer img { width: 40px; height: 40px; border-radius: 50%; opacity: 0.8; }
+        .footer span { font-size: 16px; font-weight: bold; letter-spacing: 2px; color: rgba(255,255,255,0.6); }
+
+        /* Variações Específicas */
+        .slide-cta { background: linear-gradient(135deg, #E4007C 0%, #BE185D 100%); text-align: center; align-items: center; }
+        .slide-cta .titulo { font-size: 55px; }
+
+    </style>
+</head>
+<body>
+
+    <h1>🚀 IMPRESSORA DO CARROSSEL DE DOMINGO 🚀</h1>
+    <p style="color:#9CA3AF; margin-bottom: 30px; font-size: 18px;">Clique no botão abaixo para transformar os códigos abaixo em 6 imagens perfeitas (PNGs) na sua máquina.</p>
+    <button onclick="baixarTudo()">BAIXAR 6 IAMGENS AGORA 👇</button>
+
+    <div class="grid-preview">
+        <!-- SLIDE 1 -->
+        <div class="slide" id="slide1">
+            <div class="numero">1</div>
+            <div class="slide-content">
+                <div class="tag">💡 O Plano Mestre</div>
+                <div class="titulo">Tá, eu <span class="titulo-destaque">cadastro</span> meu resgatado no Link da Bio hoje...</div>
+                <div class="texto">Mas e depois? O que acontece com ele lá dentro?</div>
+            </div>
+            <div class="footer"><span>@SONHODOBICHO</span></div>
+        </div>
+
+        <!-- SLIDE 2 -->
+        <div class="slide" id="slide2">
+            <div class="numero">2</div>
+            <div class="slide-content">
+                <div class="tag">🚨 A Verdade</div>
+                <div class="titulo">Nosso objetivo <span class="titulo-destaque">NÃO É</span> criar um cemitério de fotos.</div>
+                <div class="texto">Nós sabemos que você está exausto de colocar dados em sites que nunca te trouxeram UMA única adoção. O nosso objetivo final é <strong>esvaziar o seu abrigo.</strong></div>
+            </div>
+            <div class="footer"><span>@SONHODOBICHO</span></div>
+        </div>
+
+        <!-- SLIDE 3 -->
+        <div class="slide" id="slide3">
+            <div class="numero">3</div>
+            <div class="slide-content">
+                <div class="tag">🔒 FASE 1: HOJE</div>
+                <div class="titulo">O <span class="titulo-destaque">Alistamento</span> Secreto do Mapa.</div>
+                <div class="texto">Estamos abrindo as portas do Sistema apenas para as ONGs e Protetores colocarem suas 'tropas' no mapa, antes de soltarmos para o grande público.</div>
+            </div>
+            <div class="footer"><span>@SONHODOBICHO</span></div>
+        </div>
+
+        <!-- SLIDE 4 -->
+        <div class="slide" id="slide4">
+            <div class="numero">4</div>
+            <div class="slide-content">
+                <div class="tag">🌎 FASE 2: BRASIL</div>
+                <div class="titulo">A Invasão do <span class="titulo-destaque">Aplicativo Oficial.</span></div>
+                <div class="texto">Assim que o  Mapa estiver populado de vidas disponíveis, vamos acionar nossa máquina para milhões de famílias brasileiras que querem adotar.</div>
+            </div>
+            <div class="footer"><span>@SONHODOBICHO</span></div>
+        </div>
+
+        <!-- SLIDE 5 -->
+        <div class="slide" id="slide5">
+            <div class="numero">5</div>
+            <div class="slide-content">
+                <div class="tag">📍 A MAGIA ACONTECE</div>
+                <div class="titulo">O <span class="titulo-destaque">Match Geográfico</span> Direto no Zap.</div>
+                <div class="texto">Se uma família da SUA CIDADE abrir o app querendo adotar, o sistema vai cruzar os GPS e mostrar a foto do <strong>SEU RESGATADO</strong>. E o botão "Adotar" vai mandar mensagem direto pro <strong>seu WhatsApp pessoal!</strong></div>
+            </div>
+            <div class="footer"><span>@SONHODOBICHO</span></div>
+        </div>
+
+        <!-- SLIDE 6 -->
+        <div class="slide slide-cta" id="slide6">
+            <div class="numero" style="color: rgba(255,255,255,0.08);">6</div>
+            <div class="slide-content">
+                <div class="titulo">O RADAR JÁ ESTÁ <span style="color:#FDE047;">LIGADO.</span></div>
+                <div class="texto" style="color:white; margin-bottom: 40px; font-weight: bold; font-size:28px;">
+                    Para a mágica do GPS acontecer amanhã, seu animal precisa estar no Sistema de Dados HOJE!
+                </div>
+                <div class="tag" style="background:#fff; font-size: 24px;">👇 CLICAR NO LINK DA BIO</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function baixarTudo() {
+            const btn = document.querySelector('button');
+            btn.innerText = "RENDERIZANDO... (Aguarde 5s)";
+            btn.style.background = "#D1D5DB";
+            btn.style.color = "#111827";
+
+            for(let i = 1; i <= 6; i++) {
+                const element = document.getElementById(`slide${i}`);
+                await html2canvas(element, { scale: 2 }).then(canvas => { // scale: 2 converte pra 1080x1350
+                    let a = document.createElement('a');
+                    a.href = canvas.toDataURL("image/png");
+                    a.download = `Slide_${i}_SonhoDoBicho.png`;
+                    a.click();
+                });
+                // Pausa rápida entre downloads pra não travar o navegador
+                await new Promise(r => setTimeout(r, 600)); 
+            }
+
+            btn.innerText = "✅ 6 IMAGENS BAIXADAS!";
+            btn.style.background = "#10B981";
+            btn.style.color = "#fff";
+        }
+    </script>
+</body>
+</html>
