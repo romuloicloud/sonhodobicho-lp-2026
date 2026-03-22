@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa Nacional @sonhodobicho</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap');
+
+        :root {
+            --primary: #6A0DAD;
+            --primary-hover: #4e0687;
+            --bg-color: #FAFAFA;
+            --text-dark: #2B2D42;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.9);
+            --accent-pink: #E4007C;
+            --accent-yellow: #FCF523;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            text-align: center;
+        }
+        
+        h1, h2, h3 { font-family: 'Outfit', sans-serif; }
+
+        .container { 
+            max-width: 440px; margin: 40px auto; padding: 25px 20px;
+            background: var(--glass-bg); backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border); border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(43, 45, 66, 0.05);
+        }
+
+        .header img { width: 140px; margin-bottom: 5px; animation: pulseLogo 3s infinite; }
+        
+        .social-proof {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--accent-yellow); color: var(--primary);
+            padding: 8px 18px; border-radius: 20px; font-weight: 800; font-size: 14px; margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(106, 13, 173, 0.2);
+        }
+
+        .form-group { margin-bottom: 16px; text-align: left; }
+        .form-group label { display: block; font-weight: 600; font-size: 13px; margin-bottom: 6px; color: #4B5563; }
+        input, select {
+            width: 100%; padding: 14px; border-radius: 12px;
+            border: 1px solid rgba(43, 45, 66, 0.1); background: #fff;
+            font-size: 15px; transition: all 0.3s;
+        }
+        input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(106, 13, 173, 0.15); }
+        
+        /* UX de Mini Fotos */
+        .pet-list { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px; justify-content: center; }
+        .pet-item-container { text-align: center; animation: fadeIn 0.4s ease; }
+        .pet-thumb { width: 65px; height: 65px; border-radius: 50%; border: 3px solid var(--primary); object-fit: cover; box-shadow: 0 4px 10px rgba(106,13,173,0.15); }
+        .pet-name-sm { font-size: 12px; font-weight: 700; color: var(--text-dark); margin-top: 5px; display: block; overflow: hidden; text-overflow: ellipsis; max-width: 65px; white-space: nowrap; }
+        
+        .btn-add-pet { 
+            width: 100%; background: transparent; color: var(--primary);
+            border: 2px dashed var(--primary); padding: 14px; border-radius: 14px;
+            font-size: 15px; font-family: 'Outfit'; font-weight: 700; cursor: pointer;
+            margin-top: 10px; transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-add-pet:hover { background: rgba(106, 13, 173, 0.05); }
+
+        .btn-submit {
+            width: 100%; background: var(--primary); color: white; border: none;
+            padding: 16px; border-radius: 14px; font-size: 17px; font-family: 'Outfit';
+            font-weight: 800; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 25px; box-shadow: 0 6px 15px rgba(106, 13, 173, 0.25);
+        }
+        .btn-submit:hover { transform: scale(1.02); background: var(--primary-hover); }
+
+        #file-input { display: none; }
+
+        @keyframes pulseLogo { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+        /* Auditoria de Responsividade (Smartphones Menores) */
+        @media (max-width: 480px) {
+            .container { 
+                margin: 20px 15px; 
+                padding: 20px 15px; 
+                border-radius: 18px; 
+                box-shadow: 0 4px 15px rgba(43, 45, 66, 0.05);
+            }
+            .header img { width: 120px; }
+            .social-proof { font-size: 13px; padding: 6px 14px; }
+            .btn-submit { font-size: 15px; padding: 14px; }
+            input, select { padding: 12px; font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img src="logo.jpeg" alt="Sonho do Bicho">
+    </div>
+    <div class="social-proof" id="counter">🌟 Junte-se a 435.000 apaixonados</div>
+
+    <div id="registration-form">
+        <div class="form-group">
+            <label>Seu Nome / ONG</label>
+            <input type="text" id="nome_protetor" placeholder="Como quer ser chamado?">
+        </div>
+        <div class="form-group">
+            <label>Instagram Oficial</label>
+            <input type="text" id="instagram_handle" placeholder="@seuperfil">
+        </div>
+        <div class="form-group">
+            <label>WhatsApp (Aviso de Lançamento)</label>
+            <input type="tel" id="whatsapp" placeholder="21 99999-9999">
+        </div>
+        <div class="form-group">
+            <label>Seu Estado (UF)</label>
+            <select id="estado_uf">
+                <option value="AC">Acre</option>
+                <option value="AL">Alagoas</option>
+                <option value="AP">Amapá</option>
+                <option value="AM">Amazonas</option>
+                <option value="BA">Bahia</option>
+                <option value="CE">Ceará</option>
+                <option value="DF">Distrito Federal</option>
+                <option value="ES">Espírito Santo</option>
+                <option value="GO">Goiás</option>
+                <option value="MA">Maranhão</option>
+                <option value="MT">Mato Grosso</option>
+                <option value="MS">Mato Grosso do Sul</option>
+                <option value="MG">Minas Gerais</option>
+                <option value="PA">Pará</option>
+                <option value="PB">Paraíba</option>
+                <option value="PR">Paraná</option>
+                <option value="PE">Pernambuco</option>
+                <option value="PI">Piauí</option>
+                <option value="RJ" selected>Rio de Janeiro</option>
+                <option value="RN">Rio Grande do Norte</option>
+                <option value="RS">Rio Grande do Sul</option>
+                <option value="RO">Rondônia</option>
+                <option value="RR">Roraima</option>
+                <option value="SC">Santa Catarina</option>
+                <option value="SP">São Paulo</option>
+                <option value="SE">Sergipe</option>
+                <option value="TO">Tocantins</option>
+                </select>
+        </div>
+
+        <hr style="border: 0.5px solid #333; margin: 20px 0;">
+
+        <h3>Cadastre seus Pets</h3>
+        <input type="file" id="file-input" accept="image/*">
+        <button class="btn-add-pet" onclick="document.getElementById('file-input').click()">+ ADICIONAR PET (FOTO)</button>
+        
+        <div class="pet-list" id="pet-display-area">
+            </div>
+
+        <button class="btn-submit" onclick="enviarTudo()">SALVAR NO MAPA (LANÇAMENTO OFICIAL)</button>
+    </div>
+</div>
+
+<script>
+    // 🔥 MATA-CACHE NUCLEAR: Destrói qualquer token fantasma armazenado no Chrome/Edge.
+    try { localStorage.clear(); sessionStorage.clear(); } catch(e) {}
+
+    // CREDENCIAIS ECHOPOP3 (Sincronizadas com seu .env)
+    const SUPABASE_URL = "https://orzrtshvgmtmzfkezaae.supabase.co";
+    // 🟢 ESTA É A CHAVE PURA CORRETA (Tamanho: 207) COM O ID DO PROJETO INTERNO:
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9yenJ0c2h2Z210bXpma2V6YWFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwMzQ3MDgsImV4cCI6MjA4OTYxMDcwOH0.TOUjyM0VLno_0KXsL_c6YBwdnczzsnn5ltTd2-OZhHA";
+    
+    // Injeção Absoluta: Trava o Header do Navegador para nunca usar Caches Zumbis
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+        auth: {
+            persistSession: false,
+            autoRefreshToken: false,
+            detectSessionInUrl: false
+        }
+    });
+
+    let petsParaEnviar = [];
+
+    // Gerenciador de Fotos e UX
+    document.getElementById('file-input').onchange = async function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const nomePet = prompt("Qual o nome desse pet?");
+            if (!nomePet) return;
+
+            // Preview na tela (Mini Fotos)
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const div = document.createElement('div');
+                div.className = 'pet-item-container';
+                div.innerHTML = `<img src="${event.target.result}" class="pet-thumb" title="${nomePet}"><span class="pet-name-sm">${nomePet}</span>`;
+                document.getElementById('pet-display-area').appendChild(div);
+            };
+            reader.readAsDataURL(file);
+
+            // Adiciona ao array para envio posterior
+            petsParaEnviar.push({ file, nome: nomePet });
+        }
+    };
+
+    async function enviarTudo() {
+        const nome = document.getElementById('nome_protetor').value;
+        const insta = document.getElementById('instagram_handle').value;
+        const whats = document.getElementById('whatsapp').value;
+        const uf = document.getElementById('estado_uf').value;
+
+        if (!nome || !whats || petsParaEnviar.length === 0) {
+            alert("Preencha seu nome, WhatsApp e adicione ao menos um pet!");
+            return;
+        }
+
+        // 1. Salvar Protetor (Lead) via SDK Nativa
+        const btn = document.querySelector('.btn-submit');
+        btn.textContent = "Gravando Banco Local...";
+        btn.disabled = true; // Previne Duplos Cliques Traidores
+        
+        try {
+            console.log("Iniciando Insert Leads... Enviando:", { nome_protetor: nome, instagram_handle: insta, whatsapp: whats, estado_uf: uf });
+            
+            const { data: lead, error: e1 } = await supabaseClient
+                .from('leads_pets')
+                .insert([{ nome_protetor: nome, instagram_handle: insta, whatsapp: whats, estado_uf: uf }])
+                .select();
+
+            if (e1) {
+                btn.textContent = "SALVAR NO MAPA (LANÇAMENTO OFICIAL)";
+                btn.disabled = false;
+                console.error("ERRO CONEXÃO LEADS:", e1);
+                return alert("Erro ao Conectar (Consulte Console): " + e1.message);
+            }
+
+            console.log("-> Retorno Sucesso Lead:", lead);
+
+            if (!lead || lead.length === 0) {
+                // A Proteção contra Falha Silenciosa Se a Tabela não devolveu Data!
+                throw new Error("O Banco aceitou a gravação, mas a Política RLS de Leitura (SELECT) está bloqueando o retorno do ID! Impossível ligar Foto ao Pet nulo.");
+            }
+
+            const leadId = lead[0].id;
+            console.log("-> ID de Protetor Capturado:", leadId);
+
+            // 2. Upload das Fotos e Cadastro dos Pets
+            if (petsParaEnviar.length > 0) {
+                btn.textContent = "Processando " + petsParaEnviar.length + " Foto(s)...";
+                console.log("Iniciando Loop de Upload de Fotos...");
+            }
+
+            for (let i = 0; i < petsParaEnviar.length; i++) {
+                let pet = petsParaEnviar[i];
+                console.log(`-> Fazendo upload da foto: ${pet.nome} (${i+1}/${petsParaEnviar.length})`);
+                
+                const fileName = `${Date.now()}_pet_${i}.webp`;
+                const { data: upload, error: e2 } = await supabaseClient.storage
+                    .from('pets_uploads')
+                    .upload(fileName, pet.file);
+
+                if (e2) {
+                    console.error("-> ERRO Upload Storage Pet " + pet.nome + ":", e2);
+                    alert("Aviso: Falha ao subir a foto de " + pet.nome + " (" + e2.message + ")");
+                } else {
+                    console.log("-> Upload de imagem SUCESSO. Gravando vínculo de Pet nas Tabelas...");
+                    const { data: urlData } = supabaseClient.storage.from('pets_uploads').getPublicUrl(fileName);
+                    
+                    const { error: e3 } = await supabaseClient.from('pets_comunidade').insert([
+                        { lead_id: leadId, nome_pet: pet.nome, foto_url: urlData.publicUrl }
+                    ]);
+                    
+                    if(e3) {
+                         console.error("-> ERRO Vincular Pet " + pet.nome + ":", e3);
+                         alert("Aviso: O cadastro do pet " + pet.nome + " falhou! " + e3.message);
+                    }
+                }
+            }
+
+            console.log("==== FIM DO PROCESSO ====");
+            btn.textContent = "TUDO PRONTO!";
+            alert("SUCESSO ABSOLUTO! Você e seus pets estão no mapa do @sonhodobicho. Fique atento ao WhatsApp!");
+            location.reload();
+
+        } catch (err) {
+            console.error("CRASH FATAL SILENCIOSO DETECTADO:", err);
+            const btnFallback = document.querySelector('.btn-submit');
+            if(btnFallback) {
+                btnFallback.textContent = "SALVAR NO MAPA (LANÇAMENTO OFICIAL)";
+                btnFallback.disabled = false;
+            }
+            alert("🚨 Travamento Crítico (Javascript Panic): \n" + err.message);
+        }
+    }
+</script>
+
+</body>
+</html>

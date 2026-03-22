@@ -1,0 +1,47 @@
+{
+  "project": "Sonho do Bicho LP",
+  "audience": "441k Followers",
+  "brand_pillars": ["Acolhimento", "Urgência", "Comunidade", "Adoção Responsável"],
+  "typography": {
+    "primary_heading": "Outfit, sans-serif",
+    "secondary_body": "Inter, sans-serif",
+    "font_weights": {
+      "bold": 700,
+      "medium": 500,
+      "regular": 400
+    }
+  },
+  "color_palette": {
+    "primary_urgency": {
+      "hex": "#FF5A36",
+      "hsl": "hsl(11, 100%, 61%)",
+      "usage": "Call to Actions, Botões de Conversão, Contadores (Urgência da causa)"
+    },
+    "secondary_warmth": {
+      "hex": "#F4A261",
+      "hsl": "hsl(27, 87%, 67%)",
+      "usage": "Ícones de destaque, Ilustrações secundárias, Hover effects"
+    },
+    "background_comfort": {
+      "hex": "#FFF6F0",
+      "hsl": "hsl(24, 100%, 97%)",
+      "usage": "Fundo da página, transmitindo acolhimento e paz (Lar)"
+    },
+    "dark_trust": {
+      "hex": "#2B2D42",
+      "hsl": "hsl(235, 21%, 21%)",
+      "usage": "Textos principais, Títulos, Alta legibilidade (Contraste)"
+    },
+    "card_glassmorphism": {
+      "background": "rgba(255, 255, 255, 0.65)",
+      "backdrop_filter": "blur(12px)",
+      "border": "1px solid rgba(255, 255, 255, 0.8)",
+      "box_shadow": "0 8px 32px 0 rgba(43, 45, 66, 0.05)"
+    }
+  },
+  "micro_interactions": {
+    "button_hover": "Transformação suave para escala 1.05 e brilho externo",
+    "scroll_reveal": "Elementos surgem de baixo para cima (Fade In Up) na rolagem",
+    "form_focus": "Sombra primária contornando o input ativo com borda animada"
+  }
+}
